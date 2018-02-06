@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/program_guide"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#15181d"
+    android:visibility="gone"
+    android:orientation="vertical">
+    <!--android:background="@color/program_guide_scrim"-->
+
+    <!--<include layout="@layout/program_guide_side_panel" />-->
+
+    <LinearLayout
+        android:id="@+id/program_guide_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/program_guide_info_live"
+            android:layout_width="250dp"
+            android:layout_height="175dp"
+            android:paddingStart="26dp"
+            android:paddingTop="16dp"
+            android:background="#15181d">
+
+            <LinearLayout
+                android:id="@+id/program_guide_info_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DIRECTTV"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" | "
+                    android:textSize="15sp"
+                    android:textColor="#5f6361"/>
+                <TextView
+                    android:id="@+id/program_guide_info_currenttime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10:38AM"
+                    android:textSize="15sp"
+                    android:textColor="#5f6361"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" | "
+                    android:textSize="15sp"
+                    android:textColor="#5f6361"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NET"
+                    android:textSize="15sp"
+                    android:textColor="#5f6361"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_below="@id/program_guide_info_status"
+                android:background="#575a60"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/program_guide_info_description"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:background="#15181d">
+
+            <LinearLayout
+                android:id="@+id/program_guide_navi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="Guide"
+                    android:textSize="30sp"
+                    android:textColor="#5f6361"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/program_guide_channel_poster"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:background="#575a60"
+                android:layout_below="@id/program_guide_navi" />
+
+            <LinearLayout
+                android:id="@+id/program_guide_channel_detail"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="vertical"
+                android:layout_below="@id/program_guide_navi"
+                android:layout_toRightOf="@id/program_guide_channel_poster"
+                android:paddingStart="10dp">
+
+                <TextView
+                    android:id="@+id/program_guide_channel_detail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hotels For Dogs"
+                    android:textSize="15sp"
+                    android:textColor="#ffffff"
+                    android:paddingBottom="5dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/program_guide_channel_detail_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9:15AM"
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" ~ "
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/program_guide_channel_detail_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10:55AM"
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" | "
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/program_guide_channel_detail_pg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" PG "
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" | "
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+
+                    <TextView
+                        android:id="@+id/program_guide_channel_detail_genre"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Movie, Comedy"
+                        android:textSize="10sp"
+                        android:textColor="#ffffff"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/program_guide_channel_detail_description"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="(2009) Emma Roberts. After moving into a foster home that forbids pets, siblings (Emma Roberts, Jake T. Austine) transform an abandoned hotel into a home for their pooch and a slew"
+                    android:textSize="10sp"
+                    android:textColor="#ffffff"
+                    android:maxLines="3"
+                    android:lineSpacingExtra="1sp"
+                    android:ellipsize="end"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <include layout="@layout/program_guide_table"/>
+
+</LinearLayout>
