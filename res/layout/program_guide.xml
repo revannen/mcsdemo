@@ -64,9 +64,9 @@
                     android:id="@+id/program_guide_info_currenttime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10:38AM"
-                    android:textSize="15sp"
-                    android:textColor="#5f6361"/>
+                    android:text="00:00 AM"
+                    android:textSize="13sp"
+                    android:textColor="#ffffff"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -74,11 +74,12 @@
                     android:textSize="15sp"
                     android:textColor="#5f6361"/>
                 <TextView
+                    android:id="@+id/program_guide_info_net"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="NET"
-                    android:textSize="15sp"
-                    android:textColor="#5f6361"/>
+                    android:textSize="13sp"
+                    android:textColor="#ffffff"/>
             </LinearLayout>
 
             <ImageView

@@ -26,7 +26,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -43,6 +46,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.TextView;
 
 import com.android.tv.ChannelTuner;
 import com.android.tv.Features;
@@ -61,6 +65,7 @@ import com.android.tv.ui.ViewUtils;
 import com.android.tv.util.TvInputManagerHelper;
 import com.android.tv.util.Utils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -111,6 +116,9 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
     private int mCurrentTimeIndicatorWidth;
 
     private final View mContainer;
+
+    private final TextView mCurrentTime;
+    private final TextView mNetState;
 //    private final View mSidePanel;
 //    private final VerticalGridView mSidePanelGridView;
     private final View mTable;
@@ -201,6 +209,7 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
         mDetailPadding = res.getDimensionPixelOffset(R.dimen.program_guide_table_detail_padding);
 
         mContainer = mActivity.findViewById(R.id.program_guide);
+
 //        ViewTreeObserver.OnGlobalFocusChangeListener globalFocusChangeListener
 //                = new GlobalFocusChangeListener();
 //        mContainer.getViewTreeObserver().addOnGlobalFocusChangeListener(globalFocusChangeListener);
@@ -374,6 +383,31 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
                 (AccessibilityManager) mActivity.getSystemService(Context.ACCESSIBILITY_SERVICE);
         mShowGuidePartial = mAccessibilityManager.isEnabled()
                 || mSharedPreference.getBoolean(KEY_SHOW_GUIDE_PARTIAL, true);
+
+        mNetState = mContainer.findViewById(R.id.program_guide_info_net);
+        mCurrentTime = mContainer.findViewById(R.id.program_guide_info_currenttime);
+        Handler timeHandler = new Handler(Looper.getMainLooper());
+        timeHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                long current = System.currentTimeMillis();
+                SimpleDateFormat time = new SimpleDateFormat("hh:mm a");
+                mCurrentTime.setText(time.format(current));
+                timeHandler.postDelayed(this, 1000);
+            }
+        }, 10);
+
+        ConnectivityManager cm = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if(null != activeNetwork) {
+            if(activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+                mNetState.setText("WIFI");
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_ETHERNET) {
+                mNetState.setText("ETH");
+            }
+        } else {
+            mNetState.setText("NoCon");
+        }
     }
 
     @Override
@@ -521,7 +555,7 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
      */
     public void scheduleHide() {
         cancelHide();
-//        mHandler.postDelayed(mHideRunnable, mShowDurationMillis);
+        mHandler.postDelayed(mHideRunnable, mShowDurationMillis);
     }
 
     /**
