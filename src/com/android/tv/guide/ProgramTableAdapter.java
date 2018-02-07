@@ -54,6 +54,7 @@ import android.widget.TextView;
 import com.android.tv.R;
 import com.android.tv.TvApplication;
 import com.android.tv.common.TvCommonUtils;
+import com.android.tv.common.TvContentRatingCache;
 import com.android.tv.common.feature.CommonFeatures;
 import com.android.tv.data.Channel;
 import com.android.tv.data.Program;
@@ -287,6 +288,10 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
 
         private final ImageView mPosterView;
         private final TextView  mTitleTextEPG;
+        private final TextView  mDurationTimeEPG;
+        private final TextView  mDescriptionEPG;
+        private final TextView  mRatingEPG;
+        private final TextView  mGenreEPG;
 
         // Members of Program Details
         private final ViewGroup mDetailView;
@@ -355,6 +360,10 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
             View epgView = rootView.findViewById(R.id.program_guide);
             mPosterView = (ImageView) epgView.findViewById(R.id.program_guide_channel_poster);
             mTitleTextEPG = (TextView) epgView.findViewById(R.id.program_guide_channel_detail_title);
+            mDurationTimeEPG = (TextView) epgView.findViewById(R.id.program_guide_channel_detail_durationtime);
+            mDescriptionEPG = (TextView) epgView.findViewById(R.id.program_guide_channel_detail_description);
+            mRatingEPG = (TextView) epgView.findViewById(R.id.program_guide_channel_detail_pg);
+            mGenreEPG = (TextView) epgView.findViewById(R.id.program_guide_channel_detail_genre);
 
             mBlockView = (ImageView) mDetailView.findViewById(R.id.block);
             mTitleView = (TextView) mDetailView.findViewById(R.id.title);
@@ -570,7 +579,22 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
                     mTitleView.setText(text);
                 }
 
+                updateTextView(mRatingEPG, TvContentRatingCache.contentRatingsToString(program.getContentRatings()));
+                //draw genre for epg
+                StringBuilder sb = new StringBuilder();
+                if(program.getCanonicalGenres() != null) {
+                    for(String genre : program.getCanonicalGenres()) {
+                        sb.append(genre);
+                    }
+                    updateTextView(mGenreEPG, sb.toString());
+                }
+
                 updateTextView(mTimeView, Utils.getDurationString(context,
+                        program.getStartTimeUtcMillis(),
+                        program.getEndTimeUtcMillis(), false));
+
+                //Draw duration time EPG
+                updateTextView(mDurationTimeEPG, Utils.getDurationString(context,
                         program.getStartTimeUtcMillis(),
                         program.getEndTimeUtcMillis(), false));
 
@@ -634,9 +658,11 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
                 if (blockedRating == null) {
                     mBlockView.setVisibility(View.GONE);
                     updateTextView(mDescriptionView, program.getDescription());
+                    updateTextView(mDescriptionEPG, program.getDescription());
                 } else {
                     mBlockView.setVisibility(View.VISIBLE);
                     updateTextView(mDescriptionView, getBlockedDescription(blockedRating));
+                    updateTextView(mDescriptionEPG, getBlockedDescription(blockedRating));
                 }
             } else {
                 mTitleView.setTextColor(mDetailGrayedTextColor);

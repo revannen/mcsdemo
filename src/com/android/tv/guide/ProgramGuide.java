@@ -521,7 +521,7 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
      */
     public void scheduleHide() {
         cancelHide();
-        mHandler.postDelayed(mHideRunnable, mShowDurationMillis);
+//        mHandler.postDelayed(mHideRunnable, mShowDurationMillis);
     }
 
     /**

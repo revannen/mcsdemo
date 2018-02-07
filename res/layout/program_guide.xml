@@ -112,9 +112,8 @@
 
             <ImageView
                 android:id="@+id/program_guide_channel_poster"
-                android:layout_width="100dp"
-                android:layout_height="150dp"
-                android:background="#575a60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/program_guide_navi" />
 
             <LinearLayout
@@ -143,25 +142,10 @@
                     android:paddingBottom="5dp">
 
                     <TextView
-                        android:id="@+id/program_guide_channel_detail_start"
+                        android:id="@+id/program_guide_channel_detail_durationtime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="9:15AM"
-                        android:textSize="10sp"
-                        android:textColor="#ffffff"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=" ~ "
-                        android:textSize="10sp"
-                        android:textColor="#ffffff"/>
-
-                    <TextView
-                        android:id="@+id/program_guide_channel_detail_end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10:55AM"
+                        android:text="9:15AM ~ 10:55AM"
                         android:textSize="10sp"
                         android:textColor="#ffffff"/>
 
