@@ -582,12 +582,11 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
                 updateTextView(mRatingEPG, TvContentRatingCache.contentRatingsToString(program.getContentRatings()));
                 //draw genre for epg
                 StringBuilder sb = new StringBuilder();
-                if(program.getCanonicalGenres() != null) {
-                    for(String genre : program.getCanonicalGenres()) {
-                        sb.append(genre);
-                    }
-                    updateTextView(mGenreEPG, sb.toString());
+                if(program.get)
+                for(String genre : program.getCanonicalGenres()) {
+                    sb.append(genre);
                 }
+                updateTextView(mGenreEPG, sb.toString());
 
                 updateTextView(mTimeView, Utils.getDurationString(context,
                         program.getStartTimeUtcMillis(),
