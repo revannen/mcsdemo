@@ -50,6 +50,7 @@ import com.android.tv.MainActivity;
 import com.android.tv.R;
 import com.android.tv.TvApplication;
 import com.android.tv.common.SoftPreconditions;
+import com.android.tv.common.TvContentRatingCache;
 import com.android.tv.common.feature.CommonFeatures;
 import com.android.tv.data.Channel;
 import com.android.tv.data.Program;
@@ -99,6 +100,8 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
     private final MainActivity mMainActivity;
     private final Resources mResources;
     private View mChannelView;
+
+    private TextView mProgramRatingView;
 
     private TextView mChannelNumberTextView;
     private ImageView mChannelLogoImageView;
@@ -239,6 +242,8 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
         super.onFinishInflate();
 
         mChannelView = findViewById(R.id.channel_banner_view);
+
+        mProgramRatingView = (TextView) findViewById(R.id.program_rating);
 
         mChannelNumberTextView = (TextView) findViewById(R.id.channel_number);
         mChannelLogoImageView = (ImageView) findViewById(R.id.channel_logo);
@@ -573,6 +578,9 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
         }
         updateProgramTextView(program == mLockedChannelProgram, program.getTitle(),
                 program.getEpisodeDisplayTitle(getContext()));
+
+        //for mcs demo project
+        mProgramRatingView.setText(TvContentRatingCache.contentRatingsToString(program.getContentRatings()));
     }
 
     private void updateProgramTextView(boolean dimText, String title,
