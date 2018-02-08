@@ -60,8 +60,8 @@
         android:id="@+id/channel_logo"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_marginStart="@dimen/program_guide_table_header_column_channel_name_margin_start"
-        android:scaleType="fitStart"
+        android:layout_marginStart="140dp"
+        android:scaleType="fitCenter"
         android:visibility="gone" />
 
     <ImageView

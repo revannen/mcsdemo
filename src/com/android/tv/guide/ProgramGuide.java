@@ -667,12 +667,12 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
                 + bottomPadding;
         if (tableHeight > screenHeight) {
             // EPG height is longer that the screen height.
-            mTable.setPaddingRelative(startPadding / 2, 0, startPadding / 2, 0);
+//            mTable.setPaddingRelative(startPadding / 2, 0, startPadding / 2, 0);
             LayoutParams layoutParams = mTable.getLayoutParams();
             layoutParams.height = LayoutParams.MATCH_PARENT;
             mTable.setLayoutParams(layoutParams);
         } else {
-            mTable.setPaddingRelative(startPadding / 2, 0, startPadding / 2, bottomPadding);
+//            mTable.setPaddingRelative(startPadding / 2, 0, startPadding / 2, 0);
             LayoutParams layoutParams = mTable.getLayoutParams();
             layoutParams.height = LayoutParams.MATCH_PARENT;
             mTable.setLayoutParams(layoutParams);

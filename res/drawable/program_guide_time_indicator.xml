@@ -29,7 +29,7 @@
         <!--</shape>-->
     <!--</item>-->
 
-    <item android:top="30dp" android:left="8dp" android:bottom="0dp" android:right="0dp">
+    <item android:top="30dp" android:left="4dp" android:bottom="0dp" android:right="0dp">
         <shape android:shape="rectangle" >
             <size android:width="10dp" android:height="3dp" />
             <solid android:color="#ffffff" />

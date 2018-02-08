@@ -47,7 +47,7 @@
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:paddingStart="@dimen/program_guide_table_header_column_padding_start"
+        android:paddingStart="32dp"
         android:paddingEnd="@dimen/program_guide_table_header_column_padding_end"
         android:gravity="start|center_vertical"
         android:textAlignment="viewStart"
