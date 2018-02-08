@@ -358,7 +358,7 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
 
         mProgramTableFadeOutAnimator = AnimatorInflater.loadAnimator(mActivity,
                 R.animator.program_guide_table_fade_out);
-        mProgramTableFadeOutAnimator.setTarget(mTable);
+//        mProgramTableFadeOutAnimator.setTarget(mTable);
         mProgramTableFadeOutAnimator.addListener(new HardwareLayerAnimatorListenerAdapter(mTable) {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -376,7 +376,7 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
         });
         mProgramTableFadeInAnimator = AnimatorInflater.loadAnimator(mActivity,
                 R.animator.program_guide_table_fade_in);
-        mProgramTableFadeInAnimator.setTarget(mTable);
+//        mProgramTableFadeInAnimator.setTarget(mTable);
         mProgramTableFadeInAnimator.addListener(new HardwareLayerAnimatorListenerAdapter(mTable));
         mSharedPreference = PreferenceManager.getDefaultSharedPreferences(mActivity);
         mAccessibilityManager =
@@ -669,12 +669,12 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
             // EPG height is longer that the screen height.
             mTable.setPaddingRelative(startPadding / 2, 0, startPadding / 2, 0);
             LayoutParams layoutParams = mTable.getLayoutParams();
-            layoutParams.height = LayoutParams.WRAP_CONTENT;
+            layoutParams.height = LayoutParams.MATCH_PARENT;
             mTable.setLayoutParams(layoutParams);
         } else {
             mTable.setPaddingRelative(startPadding / 2, 0, startPadding / 2, bottomPadding);
             LayoutParams layoutParams = mTable.getLayoutParams();
-            layoutParams.height = tableHeight;
+            layoutParams.height = LayoutParams.MATCH_PARENT;
             mTable.setLayoutParams(layoutParams);
         }
     }
@@ -696,7 +696,7 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
 //            animatorList.add(sidePanelGridAnimator);
 //        }
         Animator tableAnimator = AnimatorInflater.loadAnimator(mActivity, tableAnimResId);
-        tableAnimator.setTarget(mTable);
+//        tableAnimator.setTarget(mTable);
         tableAnimator.addListener(new HardwareLayerAnimatorListenerAdapter(mTable));
         animatorList.add(tableAnimator);
 

@@ -375,6 +375,12 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
             mResolutionTextView.setVisibility(View.GONE);
             mAudioChannelTextView.setVisibility(View.GONE);
         }
+
+        //for mcs
+        mClosedCaptionTextView.setVisibility(View.GONE);
+        mAspectRatioTextView.setVisibility(View.GONE);
+        mResolutionTextView.setVisibility(View.GONE);
+        mAudioChannelTextView.setVisibility(View.GONE);
     }
 
     private void updateChannelInfo() {
@@ -415,6 +421,7 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
         }
         mChannelNumberTextView.setText(displayNumber);
         mChannelNameTextView.setText(displayName);
+        mChannelNameTextView.setVisibility(View.GONE);
         TvInputInfo info = mMainActivity.getTvInputManagerHelper().getTvInputInfo(
                 getCurrentInputId());
         if (info == null || !ImageLoader.loadBitmap(createTvInputLogoLoaderCallback(info, this),
@@ -437,8 +444,9 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
     }
 
     private void updateTvInputLogo(Bitmap bitmap) {
-        mTvInputLogoImageView.setVisibility(View.VISIBLE);
-        mTvInputLogoImageView.setImageBitmap(bitmap);
+//        mTvInputLogoImageView.setVisibility(View.VISIBLE);
+//        mTvInputLogoImageView.setImageBitmap(bitmap);
+        mTvInputLogoImageView.setVisibility(View.GONE);
     }
 
     private static ImageLoaderCallback<ChannelBannerView> createTvInputLogoLoaderCallback(
@@ -551,6 +559,8 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
             boolean programDescriptionNeedFadeAnimation = (isProgramChanged
                     || !description.equals(mProgramDescriptionText)) && !mUpdateOnTune;
             updateBannerHeight(programDescriptionNeedFadeAnimation);
+            //for mcs
+            mProgramDescriptionTextView.setVisibility(GONE);
         } else {
             mProgramInfoUpdatePendingByResizing = true;
         }
@@ -586,7 +596,9 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
                             R.style.text_appearance_channel_banner_episode_title),
                     fullTitle.length() - episodeDisplayTitle.length(), fullTitle.length(),
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            mProgramTextView.setText(text);
+//            mProgramTextView.setText(text);
+            //for mcs demo
+            mProgramTextView.setText(title);
         }
         int width = mProgramDescriptionTextViewWidth + (mCurrentChannelLogoExists ?
                 0 : mChannelLogoImageViewWidth + mChannelLogoImageViewMarginStart);
@@ -656,6 +668,7 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
             mProgramTimeTextView.setVisibility(View.GONE);
             mRemainingTimeView.setVisibility(View.GONE);
         }
+        mRemainingTimeView.setVisibility(View.GONE);
     }
 
     private int getProgressPercent(long currTime, long startTime, long endTime) {

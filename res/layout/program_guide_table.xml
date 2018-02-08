@@ -21,10 +21,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/program_guide_table"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    android:translationX="@dimen/program_guide_table_exit_x"
-    android:alpha="0"
     android:elevation="@dimen/program_guide_table_elevation"
     android:clipToPadding="false" >
 
