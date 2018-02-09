@@ -63,6 +63,7 @@ import com.android.tv.dvr.DvrDataManager;
 import com.android.tv.dvr.DvrManager;
 import com.android.tv.dvr.data.ScheduledRecording;
 import com.android.tv.guide.ProgramManager.TableEntriesUpdatedListener;
+import com.android.tv.parental.ContentRatingsManager;
 import com.android.tv.parental.ParentalControlSettings;
 import com.android.tv.ui.HardwareLayerAnimatorListenerAdapter;
 import com.android.tv.util.ImageCache;
@@ -115,6 +116,8 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
     private final String mRecordingInProgressText;
     private final int mDvrPaddingStartWithTrack;
     private final int mDvrPaddingStartWithOutTrack;
+
+    private ContentRatingsManager mContentRatingsManager;
 
     ProgramTableAdapter(Context context, ProgramGuide programGuide) {
         mContext = context;
@@ -186,6 +189,9 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
         });
         update();
         mProgramManager.addTableEntryChangedListener(this);
+
+        mContentRatingsManager = TvApplication.getSingletons(context)
+                .getTvInputManagerHelper().getContentRatingsManager();
     }
 
     private void update() {
@@ -579,9 +585,17 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
                     mTitleView.setText(text);
                 }
 
-                updateTextView(mRatingEPG, TvContentRatingCache.contentRatingsToString(program.getContentRatings()));
-                //draw genre for epg
+                TvContentRating[] ratings = program.getContentRatings();
                 StringBuilder sb = new StringBuilder();
+                if(ratings != null) {
+                    for(TvContentRating rating : ratings) {
+                        sb.append(mContentRatingsManager.getDisplayNameForRating(rating));
+                    }
+                    updateTextView(mRatingEPG, sb.toString());
+                }
+
+                //draw genre for epg
+                sb = new StringBuilder();
                 if(program.getCanonicalGenres() != null) {
                     for(String genre : program.getCanonicalGenres()) {
                         sb.append(genre);

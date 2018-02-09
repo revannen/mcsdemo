@@ -580,7 +580,14 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
                 program.getEpisodeDisplayTitle(getContext()));
 
         //for mcs demo project
-        mProgramRatingView.setText(TvContentRatingCache.contentRatingsToString(program.getContentRatings()));
+        TvContentRating[] ratings = program.getContentRatings();
+        StringBuilder sb = new StringBuilder();
+        if(ratings != null) {
+            for(TvContentRating rating : ratings) {
+                sb.append(mContentRatingsManager.getDisplayNameForRating(rating));
+            }
+            mProgramRatingView.setText(sb);
+        }
     }
 
     private void updateProgramTextView(boolean dimText, String title,
@@ -660,6 +667,9 @@ public class ChannelBannerView extends FrameLayout implements TvTransitionManage
                 }
             }
         }
+        mContentRatingsTextViews[0].setVisibility(View.GONE);
+        mContentRatingsTextViews[1].setVisibility(View.GONE);
+        mContentRatingsTextViews[2].setVisibility(View.GONE);
     }
 
     private void updateProgramTimeInfo(Program program) {
