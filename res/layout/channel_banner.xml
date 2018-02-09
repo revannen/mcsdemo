@@ -55,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/channel_banner_program_large_margin_top"
+            android:layout_marginStart="20dp"
             android:layout_alignParentTop="true"
             android:maxLines="2"
             android:lineSpacingExtra="0.5sp"
@@ -97,27 +98,18 @@
         <TextView android:id="@+id/program_time_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="20dp"
             android:layout_alignBottom="@id/channel_name"
             android:layout_toEndOf="@id/channel_name"
             android:textColor="#ffffff"
             android:fontFamily="@string/condensed_font"
             android:textSize="@dimen/channel_banner_small_text_size" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/channel_name"
-            android:layout_toEndOf="@id/program_time_text"
-            android:textColor="#ffffff"
-            android:fontFamily="@string/condensed_font"
-            android:textSize="@dimen/channel_banner_small_text_size"
-            android:text="|" />
-
         <TextView android:id="@+id/program_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="4dp"
             android:layout_alignBottom="@id/channel_name"
             android:layout_toEndOf="@id/program_time_text"
             android:textColor="#ffffff"
