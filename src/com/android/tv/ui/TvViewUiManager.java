@@ -37,6 +37,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Property;
 import android.view.Display;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -597,14 +598,14 @@ public class TvViewUiManager {
         mTvViewStartMarginBeforeShrunken = mTvViewStartMargin;
         mTvViewEndMarginBeforeShrunken = mTvViewEndMargin;
         setTvViewMargin(startMargin, endMargin);
-        mDisplayModeBeforeShrunken = setDisplayModeEPG(DisplayMode.MODE_NORMAL, false, true);
+        mDisplayModeBeforeShrunken = setDisplayModeEPG(DisplayMode.MODE_NORMAL, false, false);
     }
 
     public void endShrunkenTvViewEPG() {
         mIsUnderShrunkenTvView = false;
         mTvView.setIsUnderShrunken(false);
         setTvViewMargin(mTvViewStartMarginBeforeShrunken, mTvViewEndMarginBeforeShrunken);
-        setDisplayMode(mDisplayModeBeforeShrunken, false, true);
+        setDisplayMode(mDisplayModeBeforeShrunken, false, false);
     }
 
     public int setDisplayModeEPG(int displayMode, boolean storeInPreference, boolean animate) {
@@ -679,24 +680,24 @@ public class TvViewUiManager {
                 layoutParams.height = availableAreaHeight;
                 break;
         }
+
+        View epglive = (View) ((Activity)mContext).findViewById(R.id.program_guide_epglive);
+        LayoutParams epglp = epglive.getLayoutParams();
+        epglp.width = layoutParams.width;
+        epglp.height = layoutParams.height;
+
         // FrameLayout has an issue with centering when left and right margins differ.
         // So stick to Gravity.START | Gravity.CENTER_VERTICAL.
         int marginStart = (availableAreaWidth - layoutParams.width) / 2;
         layoutParams.setMarginStart(marginStart);
-        int tvViewFrameTop = (mWindowHeight - availableAreaHeight) / 2;
-//        FrameLayout.LayoutParams tvViewFrame = createMarginLayoutParams(
-//                mTvViewStartMargin, mTvViewEndMargin, 80, 0);
 
         FrameLayout.LayoutParams tvViewFrame = new FrameLayout.LayoutParams(0, 0);
         tvViewFrame.setMarginStart(mTvViewStartMargin);
         tvViewFrame.setMarginEnd(mTvViewEndMargin);
-        tvViewFrame.topMargin = 100;
+        tvViewFrame.topMargin = 90;
         tvViewFrame.bottomMargin = 0;
         tvViewFrame.width = layoutParams.width;
         tvViewFrame.height = layoutParams.height;
-
-//        tvViewFrame.width = mWindowWidth - mTvViewStartMargin - mTvViewEndMargin;
-//        tvViewFrame.height = mWindowHeight - 100;
 
         setTvViewPosition(layoutParams, tvViewFrame, animate);
         setBackgroundColor(mResources.getColor(isTvViewFullScreen()

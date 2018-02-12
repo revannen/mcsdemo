@@ -691,39 +691,11 @@ public class TvOverlayManager {
         mProgramGuide.show(new Runnable() {
             @Override
             public void run() {
-                setTvViewForEPG();
+                //for epg live
+                mTvViewUiManager.startShrunkenTvViewEPG(80, 1400);
                 hideOverlays(TvOverlayManager.FLAG_HIDE_OVERLAYS_KEEP_PROGRAM_GUIDE);
             }
         });
-    }
-
-    private void setTvViewForEPG() {
-        //for epg live
-        View epglive = (View)mMainActivity.findViewById(R.id.program_guide_epglive);
-        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(0, 0,
-                ((FrameLayout.LayoutParams) mTvView.getTvViewLayoutParams()).gravity);
-        layoutParams.width = epglive.getWidth();
-        layoutParams.height = epglive.getHeight();
-        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) epglive.getLayoutParams();
-
-        DisplayManager displayManager = (DisplayManager) mMainActivity.getApplicationContext()
-                .getSystemService(Context.DISPLAY_SERVICE);
-        Display display = displayManager.getDisplay(Display.DEFAULT_DISPLAY);
-        Point size = new Point();
-        display.getSize(size);
-        int mWindowWidth = size.x;
-        int mWindowHeight = size.y;
-
-        FrameLayout.LayoutParams tvViewFrame = new FrameLayout.LayoutParams(0, 0);
-        tvViewFrame.setMarginStart(lp.getMarginStart());
-        tvViewFrame.setMarginEnd(lp.getMarginEnd());
-        tvViewFrame.topMargin = lp.topMargin;
-        tvViewFrame.bottomMargin = lp.bottomMargin;
-        tvViewFrame.width = mWindowWidth - lp.getMarginStart() - lp.getMarginEnd();
-        tvViewFrame.height = mWindowHeight - tvViewFrame.topMargin - tvViewFrame.bottomMargin;
-        epglive = mTvView;
-
-        mTvViewUiManager.startShrunkenTvViewEPG(100, 1400);
     }
 
     /**
