@@ -586,4 +586,124 @@ public class TvViewUiManager {
         lp.height = mWindowHeight - topMargin - bottomMargin;
         return lp;
     }
+
+    /**
+     * For EPG live three customizing functions below
+     */
+    public void startShrunkenTvViewEPG(int startMargin, int endMargin) {
+        mIsUnderShrunkenTvView = true;
+        mTvView.setIsUnderShrunken(true);
+
+        mTvViewStartMarginBeforeShrunken = mTvViewStartMargin;
+        mTvViewEndMarginBeforeShrunken = mTvViewEndMargin;
+        setTvViewMargin(startMargin, endMargin);
+        mDisplayModeBeforeShrunken = setDisplayModeEPG(DisplayMode.MODE_NORMAL, false, true);
+    }
+
+    public void endShrunkenTvViewEPG() {
+        mIsUnderShrunkenTvView = false;
+        mTvView.setIsUnderShrunken(false);
+        setTvViewMargin(mTvViewStartMarginBeforeShrunken, mTvViewEndMarginBeforeShrunken);
+        setDisplayMode(mDisplayModeBeforeShrunken, false, true);
+    }
+
+    public int setDisplayModeEPG(int displayMode, boolean storeInPreference, boolean animate) {
+        int prev = mDisplayMode;
+        mDisplayMode = displayMode;
+        if (storeInPreference) {
+            mSharedPreferences.edit().putInt(TvSettings.PREF_DISPLAY_MODE, displayMode).apply();
+        }
+        applyDisplayModeEPG(mTvView.getVideoDisplayAspectRatio(), animate, false);
+        return prev;
+    }
+
+    private void applyDisplayModeEPG(float videoDisplayAspectRatio, boolean animate,
+                                  boolean forceUpdate) {
+        if (videoDisplayAspectRatio <= 0f) {
+            videoDisplayAspectRatio = (float) mWindowWidth / mWindowHeight;
+        }
+        if (mAppliedDisplayedMode == mDisplayMode
+                && mAppliedTvViewStartMargin == mTvViewStartMargin
+                && mAppliedTvViewEndMargin == mTvViewEndMargin
+                && Math.abs(mAppliedVideoDisplayAspectRatio - videoDisplayAspectRatio) <
+                DISPLAY_ASPECT_RATIO_EPSILON) {
+            if (!forceUpdate) {
+                return;
+            }
+        } else {
+            mAppliedDisplayedMode = mDisplayMode;
+            mAppliedTvViewStartMargin = mTvViewStartMargin;
+            mAppliedTvViewEndMargin = mTvViewEndMargin;
+            mAppliedVideoDisplayAspectRatio = videoDisplayAspectRatio;
+        }
+        int availableAreaWidth = mWindowWidth - mTvViewStartMargin - mTvViewEndMargin;
+        int availableAreaHeight = availableAreaWidth * mWindowHeight / mWindowWidth;
+        int displayMode = mDisplayMode;
+        float availableAreaRatio = 0;
+        if (availableAreaWidth <= 0 || availableAreaHeight <= 0) {
+            displayMode = DisplayMode.MODE_FULL;
+            Log.w(TAG, "Some resolution info is missing during applyDisplayMode. ("
+                    + "availableAreaWidth=" + availableAreaWidth + ", availableAreaHeight="
+                    + availableAreaHeight + ")");
+        } else {
+            availableAreaRatio = (float) availableAreaWidth / availableAreaHeight;
+        }
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(0, 0,
+                ((FrameLayout.LayoutParams) mTvView.getTvViewLayoutParams()).gravity);
+        switch (displayMode) {
+            case DisplayMode.MODE_ZOOM:
+                if (videoDisplayAspectRatio < availableAreaRatio) {
+                    // Y axis will be clipped.
+                    layoutParams.width = availableAreaWidth;
+                    layoutParams.height = Math.round(availableAreaWidth / videoDisplayAspectRatio);
+                } else {
+                    // X axis will be clipped.
+                    layoutParams.width = Math.round(availableAreaHeight * videoDisplayAspectRatio);
+                    layoutParams.height = availableAreaHeight;
+                }
+                break;
+            case DisplayMode.MODE_NORMAL:
+                if (videoDisplayAspectRatio < availableAreaRatio) {
+                    // X axis has black area.
+                    layoutParams.width = Math.round(availableAreaHeight * videoDisplayAspectRatio);
+                    layoutParams.height = availableAreaHeight;
+                } else {
+                    // Y axis has black area.
+                    layoutParams.width = availableAreaWidth;
+                    layoutParams.height = Math.round(availableAreaWidth / videoDisplayAspectRatio);
+                }
+                break;
+            case DisplayMode.MODE_FULL:
+            default:
+                layoutParams.width = availableAreaWidth;
+                layoutParams.height = availableAreaHeight;
+                break;
+        }
+        // FrameLayout has an issue with centering when left and right margins differ.
+        // So stick to Gravity.START | Gravity.CENTER_VERTICAL.
+        int marginStart = (availableAreaWidth - layoutParams.width) / 2;
+        layoutParams.setMarginStart(marginStart);
+        int tvViewFrameTop = (mWindowHeight - availableAreaHeight) / 2;
+//        FrameLayout.LayoutParams tvViewFrame = createMarginLayoutParams(
+//                mTvViewStartMargin, mTvViewEndMargin, 80, 0);
+
+        FrameLayout.LayoutParams tvViewFrame = new FrameLayout.LayoutParams(0, 0);
+        tvViewFrame.setMarginStart(mTvViewStartMargin);
+        tvViewFrame.setMarginEnd(mTvViewEndMargin);
+        tvViewFrame.topMargin = 100;
+        tvViewFrame.bottomMargin = 0;
+        tvViewFrame.width = layoutParams.width;
+        tvViewFrame.height = layoutParams.height;
+
+//        tvViewFrame.width = mWindowWidth - mTvViewStartMargin - mTvViewEndMargin;
+//        tvViewFrame.height = mWindowHeight - 100;
+
+        setTvViewPosition(layoutParams, tvViewFrame, animate);
+        setBackgroundColor(mResources.getColor(isTvViewFullScreen()
+                        ? R.color.tvactivity_background : R.color.tvactivity_background_on_shrunken_tvview,
+                null), layoutParams, animate);
+
+        // Update the current display mode.
+        mTvOptionsManager.onDisplayModeChanged(displayMode);
+    }
 }

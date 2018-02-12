@@ -19,7 +19,10 @@ package com.android.tv.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentManager.OnBackStackChangedListener;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
+import android.hardware.display.DisplayManager;
 import android.media.tv.TvContentRating;
 import android.media.tv.TvInputInfo;
 import android.os.Bundle;
@@ -29,9 +32,12 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.android.tv.ApplicationSingletons;
 import com.android.tv.ChannelTuner;
@@ -225,6 +231,8 @@ public class TvOverlayManager {
     private boolean mChannelBannerHiddenBySideFragment;
     private final Handler mHandler = new TvOverlayHandler(this);
 
+    private TvViewUiManager mTvViewUiManager;
+
     private @TvOverlayType int mOpenedOverlays;
 
     private final List<Runnable> mPendingActions = new ArrayList<>();
@@ -250,6 +258,9 @@ public class TvOverlayManager {
         mTracker = singletons.getTracker();
         mTransitionManager = new TvTransitionManager(mainActivity, sceneContainer,
                 channelBannerView, inputBannerView, mKeypadChannelSwitchView, selectInputView);
+
+        mTvViewUiManager = mMainActivity.getTvViewUiManager();
+
         mTransitionManager.setListener(new TvTransitionManager.Listener() {
             @Override
             public void onSceneChanged(int fromScene, int toScene) {
@@ -680,9 +691,39 @@ public class TvOverlayManager {
         mProgramGuide.show(new Runnable() {
             @Override
             public void run() {
+                setTvViewForEPG();
                 hideOverlays(TvOverlayManager.FLAG_HIDE_OVERLAYS_KEEP_PROGRAM_GUIDE);
             }
         });
+    }
+
+    private void setTvViewForEPG() {
+        //for epg live
+        View epglive = (View)mMainActivity.findViewById(R.id.program_guide_epglive);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(0, 0,
+                ((FrameLayout.LayoutParams) mTvView.getTvViewLayoutParams()).gravity);
+        layoutParams.width = epglive.getWidth();
+        layoutParams.height = epglive.getHeight();
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) epglive.getLayoutParams();
+
+        DisplayManager displayManager = (DisplayManager) mMainActivity.getApplicationContext()
+                .getSystemService(Context.DISPLAY_SERVICE);
+        Display display = displayManager.getDisplay(Display.DEFAULT_DISPLAY);
+        Point size = new Point();
+        display.getSize(size);
+        int mWindowWidth = size.x;
+        int mWindowHeight = size.y;
+
+        FrameLayout.LayoutParams tvViewFrame = new FrameLayout.LayoutParams(0, 0);
+        tvViewFrame.setMarginStart(lp.getMarginStart());
+        tvViewFrame.setMarginEnd(lp.getMarginEnd());
+        tvViewFrame.topMargin = lp.topMargin;
+        tvViewFrame.bottomMargin = lp.bottomMargin;
+        tvViewFrame.width = mWindowWidth - lp.getMarginStart() - lp.getMarginEnd();
+        tvViewFrame.height = mWindowHeight - tvViewFrame.topMargin - tvViewFrame.bottomMargin;
+        epglive = mTvView;
+
+        mTvViewUiManager.startShrunkenTvViewEPG(100, 1400);
     }
 
     /**

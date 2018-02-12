@@ -82,11 +82,10 @@
                     android:textColor="#ffffff"/>
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_below="@id/program_guide_info_status"
-                android:background="#575a60"/>
+            <com.android.tv.ui.TunableTvView android:id="@+id/program_guide_epglive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/program_guide_info_status" />
 
         </RelativeLayout>
 

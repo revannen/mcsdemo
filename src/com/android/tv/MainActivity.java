@@ -155,7 +155,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MainActivity extends Activity implements OnActionClickListener, OnPinCheckedListener {
     private static final String TAG = "MainActivity";
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({KEY_EVENT_HANDLER_RESULT_PASSTHROUGH, KEY_EVENT_HANDLER_RESULT_NOT_HANDLED,

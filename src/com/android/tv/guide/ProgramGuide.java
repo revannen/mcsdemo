@@ -518,6 +518,10 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
         if (!isActive()) {
             return;
         }
+
+        //for mcs epg shrunken tv view ui
+        mActivity.getTvViewUiManager().endShrunkenTvViewEPG();
+
         if (mOnLayoutListenerForShow != null) {
             mContainer.getViewTreeObserver().removeOnGlobalLayoutListener(mOnLayoutListenerForShow);
             mOnLayoutListenerForShow = null;
