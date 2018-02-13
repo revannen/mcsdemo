@@ -52,6 +52,7 @@ import com.android.tv.ChannelTuner;
 import com.android.tv.Features;
 import com.android.tv.MainActivity;
 import com.android.tv.R;
+import com.android.tv.data.Channel;
 import com.android.tv.util.DurationTimer;
 import com.android.tv.analytics.Tracker;
 import com.android.tv.common.WeakHandler;
@@ -517,6 +518,22 @@ public class ProgramGuide implements ProgramGrid.ChildFocusListener {
     public void hide() {
         if (!isActive()) {
             return;
+        }
+
+        Channel mChannelBeforeEPGView = mActivity.getChannelBeforeEPGView();
+        if(mChannelBeforeEPGView != null
+                && mChannelBeforeEPGView != mActivity.getCurrentChannel()) {
+            Runnable tuneAction = new Runnable() {
+                @Override
+                public void run() {
+                    mActivity.tuneToChannel(mChannelBeforeEPGView);
+                }
+            };
+
+            if(mActivity.getCancelEPG())
+                tuneAction.run();
+            else
+                mActivity.setCancelEPG(true);
         }
 
         //for mcs epg shrunken tv view ui

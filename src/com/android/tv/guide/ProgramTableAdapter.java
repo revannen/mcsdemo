@@ -570,7 +570,14 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
                 Program program = mSelectedEntry.program;
 
                 //tune to channel for EPG live
-//                mMainActivity.tuneToChannel(mChannelDataManager.getChannel(program.getChannelId()));
+                Channel nextChannel = mChannelDataManager.getChannel(program.getChannelId());
+                Runnable tuneAction = new Runnable() {
+                    @Override
+                    public void run() {
+                        mMainActivity.tuneToChannel(nextChannel);
+                    }
+                };
+                tuneAction.run();
 
                 TvContentRating blockedRating = getProgramBlock(program);
 

@@ -693,6 +693,7 @@ public class TvOverlayManager {
             public void run() {
                 //for epg live
                 mTvViewUiManager.startShrunkenTvViewEPG(80, 1400);
+                mMainActivity.setChannelBeforeEPGView(mTvView.getCurrentChannel());
                 hideOverlays(TvOverlayManager.FLAG_HIDE_OVERLAYS_KEEP_PROGRAM_GUIDE);
             }
         });

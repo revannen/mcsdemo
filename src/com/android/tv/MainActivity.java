@@ -302,6 +302,9 @@ public class MainActivity extends Activity implements OnActionClickListener, OnP
     private final Handler mHandler = new MainActivityHandler(this);
     private final Set<OnActionClickListener> mOnActionClickListeners = new ArraySet<>();
 
+    private Channel mChannelBeforeEPGView;
+    private boolean isCancelEPG = true;
+
     private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -2674,5 +2677,18 @@ public class MainActivity extends Activity implements OnActionClickListener, OnP
             mOverlayManager.setBlockingContentRating(null);
             mMediaSessionWrapper.update(false, getCurrentChannel(), getCurrentProgram());
         }
+    }
+
+    public void setChannelBeforeEPGView(Channel channel) {
+        mChannelBeforeEPGView = channel;
+    }
+    public Channel getChannelBeforeEPGView() throws NullPointerException {
+        return mChannelBeforeEPGView;
+    }
+    public void setCancelEPG(boolean flag) {
+        isCancelEPG = flag;
+    }
+    public boolean getCancelEPG() {
+        return isCancelEPG;
     }
 }

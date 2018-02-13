@@ -44,6 +44,7 @@ import com.android.tv.analytics.Tracker;
 import com.android.tv.common.feature.CommonFeatures;
 import com.android.tv.data.Channel;
 import com.android.tv.data.Program;
+import com.android.tv.data.StreamInfo;
 import com.android.tv.dvr.DvrManager;
 import com.android.tv.dvr.data.ScheduledRecording;
 import com.android.tv.dvr.ui.DvrUiHelper;
@@ -106,6 +107,7 @@ public class ProgramItemView extends TextView {
                 view.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        tvActivity.setCancelEPG(false);
                         tvActivity.tuneToChannel(channel);
                         tvActivity.hideOverlaysForTune();
                     }
@@ -467,7 +469,10 @@ public class ProgramItemView extends TextView {
     }
 
     private String getResolution(Program program) {
-         int videoFormat = Utils.getVideoDefinitionLevelFromSize(program.getVideoWidth(), program.getVideoHeight());
+         int videoFormat = StreamInfo.VIDEO_DEFINITION_LEVEL_UNKNOWN;
+         if(program != null) {
+             videoFormat = Utils.getVideoDefinitionLevelFromSize(program.getVideoWidth(), program.getVideoHeight());
+         }
          String ret = Utils.getVideoDefinitionLevelString(mContext, videoFormat);
          return ret;
     }
