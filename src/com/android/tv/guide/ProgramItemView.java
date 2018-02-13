@@ -43,6 +43,7 @@ import com.android.tv.TvApplication;
 import com.android.tv.analytics.Tracker;
 import com.android.tv.common.feature.CommonFeatures;
 import com.android.tv.data.Channel;
+import com.android.tv.data.Program;
 import com.android.tv.dvr.DvrManager;
 import com.android.tv.dvr.data.ScheduledRecording;
 import com.android.tv.dvr.ui.DvrUiHelper;
@@ -73,11 +74,15 @@ public class ProgramItemView extends TextView {
     private static TextAppearanceSpan sEpisodeTitleStyle;
     private static TextAppearanceSpan sGrayedOutEpisodeTitleStyle;
 
+    private static TextAppearanceSpan sProgramResolutionStyle;
+
     private ProgramGuide mProgramGuide;
     private DvrManager mDvrManager;
     private TableEntry mTableEntry;
     private int mMaxWidthForRipple;
     private int mTextWidth;
+
+    private Context mContext;
 
     // If set this flag disables requests to re-layout the parent view as a result of changing
     // this view, improving performance. This also prevents the parent view to lose child focus
@@ -185,6 +190,7 @@ public class ProgramItemView extends TextView {
 
     public ProgramItemView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mContext = context;
         setOnClickListener(ON_CLICKED);
         setOnFocusChangeListener(ON_FOCUS_CHANGED);
         mDvrManager = TvApplication.getSingletons(getContext()).getDvrManager();
@@ -225,6 +231,9 @@ public class ProgramItemView extends TextView {
                 null);
         sGrayedOutEpisodeTitleStyle = new TextAppearanceSpan(null, 0, episodeTitleSize,
                 grayedOutEpisodeTitleColor, null);
+
+        sProgramResolutionStyle = new TextAppearanceSpan( null, R.style.track_meta_text
+                , programTitleSize, grayedOutProgramTitleColor, null);
     }
 
     @Override
@@ -286,13 +295,14 @@ public class ProgramItemView extends TextView {
             SpannableStringBuilder description = new SpannableStringBuilder();
             description.append(title);
             if (!TextUtils.isEmpty(episode)) {
-                description.append('\n');
+//                description.append('\n');
+                description.append("\t");
 
                 // Add a 'zero-width joiner'/ZWJ in order to ensure we have the same line height for
                 // all lines. This is a non-printing character so it will not change the horizontal
                 // spacing however it will affect the line height. As we ensure the ZWJ has the same
                 // text style as the title it will make sure the line height is consistent.
-                description.append('\u200D');
+//                description.append('\u200D');
 
                 int middle = description.length();
 //                description.append(episode);
@@ -304,6 +314,11 @@ public class ProgramItemView extends TextView {
                 description.setSpan(titleStyle, 0, description.length(),
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
+
+            //mcs set resolution
+            int middle = description.length();
+            description.append(getResolution(entry.program));
+            description.setSpan(sProgramResolutionStyle, middle, description.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
             setText(description);
 
@@ -449,5 +464,11 @@ public class ProgramItemView extends TextView {
         } else {
             super.requestLayout();
         }
+    }
+
+    private String getResolution(Program program) {
+         int videoFormat = Utils.getVideoDefinitionLevelFromSize(program.getVideoWidth(), program.getVideoHeight());
+         String ret = Utils.getVideoDefinitionLevelString(mContext, videoFormat);
+         return ret;
     }
 }

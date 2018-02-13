@@ -51,12 +51,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.tv.MainActivity;
 import com.android.tv.R;
 import com.android.tv.TvApplication;
 import com.android.tv.common.TvCommonUtils;
 import com.android.tv.common.TvContentRatingCache;
 import com.android.tv.common.feature.CommonFeatures;
 import com.android.tv.data.Channel;
+import com.android.tv.data.ChannelDataManager;
 import com.android.tv.data.Program;
 import com.android.tv.data.Program.CriticScore;
 import com.android.tv.dvr.DvrDataManager;
@@ -116,6 +118,9 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
     private final String mRecordingInProgressText;
     private final int mDvrPaddingStartWithTrack;
     private final int mDvrPaddingStartWithOutTrack;
+
+    private ChannelDataManager mChannelDataManager;
+    private final MainActivity mMainActivity;
 
     private ContentRatingsManager mContentRatingsManager;
 
@@ -192,6 +197,9 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
 
         mContentRatingsManager = TvApplication.getSingletons(context)
                 .getTvInputManagerHelper().getContentRatingsManager();
+
+        mMainActivity = (MainActivity) mContext;
+        mChannelDataManager = TvApplication.getSingletons(context).getChannelDataManager();
     }
 
     private void update() {
@@ -560,6 +568,9 @@ class ProgramTableAdapter extends RecyclerView.Adapter<ProgramTableAdapter.Progr
                 mTitleView.setTextColor(mDetailTextColor);
                 Context context = itemView.getContext();
                 Program program = mSelectedEntry.program;
+
+                //tune to channel for EPG live
+//                mMainActivity.tuneToChannel(mChannelDataManager.getChannel(program.getChannelId()));
 
                 TvContentRating blockedRating = getProgramBlock(program);
 
