@@ -319,6 +319,11 @@ public class ProgramItemView extends TextView {
 
             //mcs set resolution
             int middle = description.length();
+
+            //for get resolution by channel video format info
+//            MainActivity tvActivity = (MainActivity)mContext;
+//            Channel channel = tvActivity.getChannelDataManager().getChannel(entry.channelId);
+
             description.append(getResolution(entry.program));
             description.setSpan(sProgramResolutionStyle, middle, description.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
@@ -473,7 +478,6 @@ public class ProgramItemView extends TextView {
          if(program != null) {
              videoFormat = Utils.getVideoDefinitionLevelFromSize(program.getVideoWidth(), program.getVideoHeight());
          }
-         String ret = Utils.getVideoDefinitionLevelString(mContext, videoFormat);
-         return ret;
+         return Utils.getVideoDefinitionLevelString(mContext, videoFormat);
     }
 }

@@ -601,13 +601,6 @@ public class TvViewUiManager {
         mDisplayModeBeforeShrunken = setDisplayModeEPG(DisplayMode.MODE_NORMAL, false, false);
     }
 
-    public void endShrunkenTvViewEPG() {
-        mIsUnderShrunkenTvView = false;
-        mTvView.setIsUnderShrunken(false);
-        setTvViewMargin(mTvViewStartMarginBeforeShrunken, mTvViewEndMarginBeforeShrunken);
-        setDisplayMode(mDisplayModeBeforeShrunken, false, false);
-    }
-
     public int setDisplayModeEPG(int displayMode, boolean storeInPreference, boolean animate) {
         int prev = mDisplayMode;
         mDisplayMode = displayMode;
